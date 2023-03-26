@@ -11,7 +11,7 @@ SRC = $(wildcard $(SRC_DIR)/*.cpp)
 
 SRC_EXT = .cpp
 
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%.o,$(SRC))
+OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%$(EXE_EXT),$(SRC))
 
 BIN = bin
 
