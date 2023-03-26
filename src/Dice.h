@@ -4,11 +4,9 @@
 class Dice {
 public:
   Dice(int maxVal);
-  void roll();
-  int getValue();
+  int roll();
 
 private:
-  int currentValue = 0;
   int maxValue = 0;
 };
 

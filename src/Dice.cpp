@@ -1,8 +1,11 @@
 #include "Dice.h"
+#include <cstddef>
 #include <cstdlib>
+#include <ctime>
 
-Dice::Dice(int maxVal) { maxValue = maxVal; }
+Dice::Dice(int maxVal) {
+  srand(time(NULL));
+  maxValue = maxVal;
+}
 
-void Dice::roll() { currentValue = 10; }
-
-int Dice::getValue() { return currentValue; }
+int Dice::roll() { return rand() % maxValue + 1; }

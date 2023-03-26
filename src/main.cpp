@@ -1,4 +1,5 @@
 #include "Dice.h"
+#include "Gameplay.h"
 #include <SDL2/SDL.h>
 #include <cstdio>
 #include <cstdlib>
@@ -7,9 +8,19 @@
 #include <ostream>
 
 int main() {
-  Dice d(20);
-  d.roll();
+  Gameplay g;
+  g.start();
 
-  std::printf("%d", d.getValue());
+  if (g.d20 != nullptr) {
+    while (g.isGameOn()) {
+      char input;
+      std::cin >> input;
+
+      g.handleInput(input);
+      if (input == 'q') {
+        g.end();
+      }
+    }
+  }
   return 0;
 }
