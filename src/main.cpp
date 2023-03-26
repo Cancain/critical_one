@@ -1,4 +1,5 @@
-#include "Dice.h"
+// #include "Dice.h"
+// #include "Gameplay.h"
 #include "Gameplay.h"
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -8,18 +9,18 @@
 #include <ostream>
 
 int main() {
+  std::cout << "hey";
+
   Gameplay g;
   g.start();
 
-  if (g.d20 != nullptr) {
-    while (g.isGameOn()) {
-      char input;
-      std::cin >> input;
+  while (g.isGameOn()) {
+    char input;
+    std::cin >> input;
 
-      g.handleInput(input);
-      if (input == 'q') {
-        g.end();
-      }
+    g.handleInput(input);
+    if (input == 'q') {
+      g.end();
     }
   }
   return 0;

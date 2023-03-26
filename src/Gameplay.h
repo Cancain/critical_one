@@ -6,6 +6,7 @@
 
 class Gameplay {
 public:
+  Gameplay();
   void start();
   void end();
   bool isGameOn();
