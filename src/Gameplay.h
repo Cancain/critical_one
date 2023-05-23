@@ -11,9 +11,10 @@ public:
   void end();
   bool isGameOn();
   void handleInput(std::basic_istream<char>::int_type input);
-  Dice d20;
+  int rollD20();
 
 private:
+  Dice d20 = Dice(20);
   bool gameOn = false;
 };
 

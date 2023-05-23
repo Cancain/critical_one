@@ -3,6 +3,8 @@
 #include <cstdlib>
 #include <ctime>
 
+Dice::Dice() {}
+
 Dice::Dice(int maxVal) {
   srand(time(NULL));
   maxValue = maxVal;

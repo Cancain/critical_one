@@ -3,6 +3,7 @@
 
 class Dice {
 public:
+  Dice();
   Dice(int maxVal);
   int roll();
 

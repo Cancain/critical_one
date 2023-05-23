@@ -4,6 +4,7 @@ else
 	EXE_EXT =
 endif
 
+OBJ_EXT = .o
 OBJ_NAME = main
 SRC_DIR = src
 
@@ -11,7 +12,7 @@ SRC = $(wildcard $(SRC_DIR)/*.cpp)
 
 SRC_EXT = .cpp
 
-OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(BIN)/%$(EXE_EXT),$(SRC))
+OBJS = $(patsubst $(SRC_DIR)/%$(SRC_EXT),$(BIN)/%$(OBJ_EXT),$(SRC))
 
 BIN = bin
 
@@ -33,13 +34,14 @@ prepare-git:
 
 setup: prepare-bin prepare-src prepare-git
 
-$(BIN)/%.o: $(SRC_DIR)/%.cpp
+$(BIN)/%$(OBJ_EXT): $(SRC_DIR)/%$(SRC_EXT)
 	$(CC) $(COMPILER_FLAGS) -c $< -o $@
 
-all: $(OBJS) prepare-bin
+all: $(OBJS) 
 	$(CC) $(OBJS) $(COMPILER_FLAGS) $(LINKER_FILES) -o $(BIN)/$(OBJ_NAME)$(EXE_EXT)
 
 run: $(BIN)/$(OBJ_NAME)$(EXE_EXT)
 	./$(BIN)/$(OBJ_NAME)$(EXE_EXT)
 
 ra: all run
+
