@@ -18,7 +18,7 @@ BIN = bin
 
 CC = g++
 
-LINKER_FILES = -lSDL2
+LINKER_FILES = -lSDL2 -lSDL2_ttf
 
 COMPILER_FLAGS = -w
 

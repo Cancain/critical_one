@@ -24,18 +24,25 @@ void Gameplay::end() {
 }
 
 void Gameplay::handleInput(SDL_Event event) {
-  auto key = event.key.keysym.sym;
+  if (event.type == SDL_KEYDOWN) {
+    auto key = event.key.keysym.sym;
 
-  switch (key) {
-  case SDLK_ESCAPE:
-    end();
-    break;
+    switch (key) {
+    case SDLK_ESCAPE:
+      end();
+      break;
 
-  case SDLK_r:
-    std::printf("You rolled %i\n", d20.roll());
-    break;
+    case SDLK_r: {
+      int roll = d20.roll();
+      char message[50];
+      sprintf(message, "You rolled %i\n", roll);
+      char *text = message;
+      mainWindow.printText(text);
+      break;
+    }
 
-  default:
-    break;
+    default:
+      break;
+    }
   }
 }
