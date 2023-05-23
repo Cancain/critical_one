@@ -1,6 +1,7 @@
 #ifndef GAMEPLAY_H
 #define GAMEPLAY_H
 #include "Dice.h"
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <istream>
 
@@ -10,8 +11,7 @@ public:
   void start();
   void end();
   bool isGameOn();
-  void handleInput(std::basic_istream<char>::int_type input);
-  int rollD20();
+  void handleInput(SDL_Event event);
 
 private:
   Dice d20 = Dice(20);

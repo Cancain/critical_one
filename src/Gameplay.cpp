@@ -1,5 +1,6 @@
 #include "Gameplay.h"
 #include "Dice.h"
+#include <SDL2/SDL.h>
 #include <cstdio>
 #include <iostream>
 #include <istream>
@@ -17,19 +18,19 @@ bool Gameplay::isGameOn() { return gameOn; }
 
 void Gameplay::end() { gameOn = false; }
 
-void Gameplay::handleInput(std::basic_istream<char>::int_type input) {
-  if (input == 'q') {
-    end();
-  }
-  if (input == 'c') {
-  }
-  if (input == 'r') {
-    std::printf("You rolled %i\n", d20.roll());
-  }
-}
+void Gameplay::handleInput(SDL_Event event) {
+  auto key = event.key.keysym.sym;
 
-int Gameplay::rollD20() {
-  int roll = d20.roll();
-  printf("you rolled: %d\n", roll);
-  return roll;
+  switch (key) {
+  case SDLK_ESCAPE:
+    end();
+    break;
+
+  case SDLK_r:
+    std::printf("You rolled %i\n", d20.roll());
+    break;
+
+  default:
+    break;
+  }
 }

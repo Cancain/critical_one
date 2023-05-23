@@ -43,11 +43,9 @@ int main() {
 
       // Hack to get window to stay up
       SDL_Event e;
-      bool quit = false;
       while (g.isGameOn()) {
         while (SDL_PollEvent(&e) != 0) {
-          if (e.type == SDL_QUIT)
-            g.end();
+          g.handleInput(e);
         }
       }
     }
