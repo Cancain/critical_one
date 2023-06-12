@@ -1,6 +1,5 @@
 
 #include "Gameplay.h"
-#include "Window.h"
 #include <SDL2/SDL.h>
 #include <cstdio>
 #include <cstdlib>
@@ -12,6 +11,7 @@ int main() {
   Gameplay g;
   g.start();
 
+  int i = 0;
   SDL_Event e;
   while (g.isGameOn()) {
     if (SDL_PollEvent(&e) != 0) {

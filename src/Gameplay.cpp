@@ -23,6 +23,13 @@ void Gameplay::end() {
   mainWindow.end();
 }
 
+void Gameplay::update() {
+  mainWindow.renderButton();
+  mainWindow.start();
+  mainWindow.update();
+  printf("update\n");
+}
+
 void Gameplay::handleInput(SDL_Event event) {
   if (event.type == SDL_KEYDOWN) {
     auto key = event.key.keysym.sym;

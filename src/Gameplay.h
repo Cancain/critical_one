@@ -13,6 +13,7 @@ public:
   void end();
   bool isGameOn();
   void handleInput(SDL_Event event);
+  void update();
 
 private:
   Window mainWindow;
