@@ -1,0 +1,7 @@
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
+
+int WINDOW_HEIGHT = 600;
+int WINDOW_WIDTH = 800;
+
+#endif
