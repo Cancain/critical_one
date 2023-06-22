@@ -8,15 +8,20 @@
 #include <ostream>
 #include <string>
 
+#include "Button.h"
 #include "Dice.h"
 #include "Window.h"
 
-Gameplay::Gameplay() {}
+Gameplay::Gameplay() { mainWindow.start(); }
 
 void Gameplay::start() {
+    SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
+    // SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
+    // SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
+    button = new Button(mainWindow.getRenderer(), buttonNormalSurface);
+    button->renderButton(mainWindow.getSurface());
     d20 = Dice(20);
     gameOn = true;
-    mainWindow.start();
 }
 
 bool Gameplay::isGameOn() { return gameOn; }
@@ -28,9 +33,15 @@ void Gameplay::end() {
 }
 
 void Gameplay::update() {
-    mainWindow.renderButton();
-    mainWindow.start();
     mainWindow.update();
+
+    SDL_Event e;
+    if (SDL_PollEvent(&e) != 0) {
+        handleInput(e);
+        if (button != nullptr) {
+            button->update(e);
+        }
+    }
 }
 
 void Gameplay::handleInput(SDL_Event event) {
@@ -52,6 +63,7 @@ void Gameplay::handleInput(SDL_Event event) {
             }
 
             default:
+                return;
                 break;
         }
     }

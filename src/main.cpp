@@ -13,11 +13,8 @@ int main() {
     Gameplay g;
     g.start();
 
-    SDL_Event e;
     while (g.isGameOn()) {
-        if (SDL_PollEvent(&e) != 0) {
-            g.handleInput(e);
-        }
+        g.update();
     }
 
     return 0;

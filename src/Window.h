@@ -13,6 +13,8 @@ class Window {
     void clearWindow();
     void renderButton();
     void update();
+    SDL_Renderer *getRenderer();
+    SDL_Surface *getSurface();
 
    private:
     SDL_Window *window = NULL;

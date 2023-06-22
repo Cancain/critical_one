@@ -8,14 +8,19 @@ class Button {
     Button(SDL_Renderer *, SDL_Surface *);
     Button(SDL_Renderer *, SDL_Surface *, SDL_Surface *);
     Button(SDL_Renderer *, SDL_Surface *, SDL_Surface *, SDL_Surface *);
+    SDL_Rect buttonRect;
+    SDL_Rect getPosition();
     void renderButton(SDL_Surface *);
+    void onClick();
+    void setPosition(SDL_Rect *pos);
+    void update(SDL_Event &e);
 
    private:
     SDL_Surface *_normalSurface = NULL;
     SDL_Surface *_hoveredSurface = NULL;
     SDL_Surface *_clickedSurface = NULL;
     SDL_Renderer *_renderer;
-    SDL_Rect buttonRect;
+    SDL_Rect *_position;
 };
 
 #endif

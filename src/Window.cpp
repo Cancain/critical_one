@@ -5,11 +5,9 @@
 #include <filesystem>
 #include <iostream>
 
-#include "Button.h"
 #include "Constants.h"
 
 Window::Window() {
-    printf("Window constructor\n");
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     } else {
@@ -70,23 +68,13 @@ void Window::clearWindow() {
     SDL_UpdateWindowSurface(window);
 }
 
-void Window::renderButton() {
-    SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
-    SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
-    SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
-
-    Button button = Button(renderer, buttonNormalSurface);
-    button.renderButton(windowSurface);
-
-    SDL_UpdateWindowSurface(window);
-};
-
-void Window::start() {
-    clearWindow();
-    renderButton();
-};
+void Window::start() { clearWindow(); };
 
 void Window::end() {
     SDL_DestroyWindow(window);
     SDL_Quit();
 };
+
+SDL_Renderer *Window::getRenderer() { return renderer; }
+
+SDL_Surface *Window::getSurface() { return windowSurface; }
