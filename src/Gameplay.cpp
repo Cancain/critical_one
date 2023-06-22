@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "Dice.h"
 #include "Window.h"
+#include "functional"
 
 Gameplay::Gameplay() { mainWindow.start(); }
 
@@ -38,14 +39,15 @@ void Gameplay::update() {
     SDL_Event e;
     if (SDL_PollEvent(&e) != 0) {
         handleInput(e);
-        if (button != nullptr) {
-            button->update(e);
-        }
     }
 }
 
 void Gameplay::handleInput(SDL_Event event) {
-    if (event.type == SDL_KEYDOWN) {
+    if (event.type == SDL_MOUSEBUTTONDOWN) {
+        button->update(event, [this]() { mainWindow.printText("Clicked!"); });
+    }
+
+    if (event.type == SDL_KEYDOWN || event.type == SDL_MOUSEBUTTONDOWN) {
         auto key = event.key.keysym.sym;
 
         switch (key) {
@@ -59,12 +61,9 @@ void Gameplay::handleInput(SDL_Event event) {
                 sprintf(message, "You rolled %i\n", roll);
                 char *text = message;
                 mainWindow.printText(text);
+                printf("r pressed! \n");
                 break;
             }
-
-            default:
-                return;
-                break;
         }
     }
 }

@@ -11,7 +11,7 @@ Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *
     buttonRect.w = _normalSurface->w;
     buttonRect.h = _normalSurface->h;
     SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
-    _position = &pos;
+    _position = pos;
 }
 
 Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *clickedSurface) {
@@ -21,7 +21,7 @@ Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *
     buttonRect.w = _normalSurface->w;
     buttonRect.h = _normalSurface->h;
     SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
-    _position = &pos;
+    _position = pos;
 }
 
 Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface) {
@@ -30,7 +30,7 @@ Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface) {
     buttonRect.w = _normalSurface->w;
     buttonRect.h = _normalSurface->h;
     SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
-    _position = &pos;
+    _position = pos;
 }
 
 void Button::renderButton(SDL_Surface *windowSurface) {
@@ -50,7 +50,7 @@ void Button::renderButton(SDL_Surface *windowSurface) {
 
     SDL_Texture *buttonNormalTexture = SDL_CreateTextureFromSurface(_renderer, _normalSurface);
 
-    SDL_BlitSurface(_normalSurface, NULL, windowSurface, _position);
+    SDL_BlitSurface(_normalSurface, NULL, windowSurface, &_position);
 
     SDL_FreeSurface(_normalSurface);
     SDL_DestroyTexture(buttonNormalTexture);
@@ -68,14 +68,19 @@ void Button::renderButton(SDL_Surface *windowSurface) {
 
 void Button::onClick() { printf("Button clicked!"); }
 
-void Button::update(SDL_Event &e) {
-    if (e.type == SDL_MOUSEBUTTONDOWN) {
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
+void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
 
-        if (mouseX >= _position->x && mouseX <= _position->x + buttonRect.w &&
-            mouseY >= _position->y && mouseY <= _position->y + buttonRect.h) {
-            onClick();
-        }
+    SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
+
+    if (mouseX >= _position.x && mouseX <= _position.x + buttonRect.w && mouseY >= _position.y &&
+        mouseY <= _position.y + buttonRect.h) {
+        // onClick();
+        clicked();
     }
 }
+
+SDL_Rect Button::getPosition() { return _position; }
+
+void Button::setPosition(SDL_Rect pos) { _position = pos; }
