@@ -17,9 +17,9 @@ class Window {
     SDL_Surface *getSurface();
 
    private:
-    SDL_Window *window = NULL;
-    SDL_Surface *windowSurface = NULL;
-    SDL_Renderer *renderer = NULL;
+    SDL_Window *_window = NULL;
+    SDL_Surface *_windowSurface = NULL;
+    SDL_Renderer *_renderer = NULL;
 };
 
 #endif

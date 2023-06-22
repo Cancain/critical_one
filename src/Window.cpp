@@ -14,29 +14,29 @@ Window::Window() {
         if (TTF_Init() < 0) {
             printf("SDL_TTF could not initialize! SDL_Error: %s\n", TTF_GetError());
         }
-        window = SDL_CreateWindow("Critical one", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                  WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
-        if (window == NULL) {
+        _window = SDL_CreateWindow("Critical one", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                                   WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+        if (_window == NULL) {
             printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
             return;
         } else {
-            renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+            _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
-            windowSurface = SDL_GetWindowSurface(window);
-            SDL_UpdateWindowSurface(window);
+            _windowSurface = SDL_GetWindowSurface(_window);
+            SDL_UpdateWindowSurface(_window);
         }
     }
 }
 
 void Window::update() {
-    if (window == NULL) {
+    if (_window == NULL) {
         printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
         return;
     } else {
-        renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+        _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
 
-        windowSurface = SDL_GetWindowSurface(window);
-        SDL_UpdateWindowSurface(window);
+        _windowSurface = SDL_GetWindowSurface(_window);
+        SDL_UpdateWindowSurface(_window);
     }
 }
 
@@ -56,25 +56,25 @@ void Window::printText(char *text) {
     if (!textSurface) {
         printf("Failed to render text: %s\n", TTF_GetError());
     }
-    SDL_BlitSurface(textSurface, NULL, windowSurface, NULL);
+    SDL_BlitSurface(textSurface, NULL, _windowSurface, NULL);
 
-    SDL_UpdateWindowSurface(window);
+    SDL_UpdateWindowSurface(_window);
     SDL_FreeSurface(textSurface);
 }
 
 void Window::clearWindow() {
-    SDL_FillRect(windowSurface, NULL, SDL_MapRGB(windowSurface->format, 0xFF, 0xFF, 0xFF));
+    SDL_FillRect(_windowSurface, NULL, SDL_MapRGB(_windowSurface->format, 0xFF, 0xFF, 0xFF));
 
-    SDL_UpdateWindowSurface(window);
+    SDL_UpdateWindowSurface(_window);
 }
 
 void Window::start() { clearWindow(); };
 
 void Window::end() {
-    SDL_DestroyWindow(window);
+    SDL_DestroyWindow(_window);
     SDL_Quit();
 };
 
-SDL_Renderer *Window::getRenderer() { return renderer; }
+SDL_Renderer *Window::getRenderer() { return _renderer; }
 
-SDL_Surface *Window::getSurface() { return windowSurface; }
+SDL_Surface *Window::getSurface() { return _windowSurface; }

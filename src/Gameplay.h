@@ -20,9 +20,11 @@ class Gameplay {
     Button *button = nullptr;
 
    private:
-    Window mainWindow;
-    Dice d20 = Dice(20);
-    bool gameOn = false;
+    void _renderRollButton();
+    void _rolld20();
+    Window _mainWindow;
+    Dice _d20 = Dice(20);
+    bool _gameOn = false;
 };
 
 #endif

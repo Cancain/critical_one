@@ -4,24 +4,13 @@
 
 Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *clickedSurface,
                SDL_Surface *hoveredSurface) {
-    _renderer = renderer;
-    _normalSurface = normalSurface;
-    _clickedSurface = clickedSurface;
+    Button(renderer, normalSurface, clickedSurface);
     _hoveredSurface = hoveredSurface;
-    buttonRect.w = _normalSurface->w;
-    buttonRect.h = _normalSurface->h;
-    SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
-    _position = pos;
 }
 
 Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *clickedSurface) {
-    _renderer = renderer;
-    _normalSurface = normalSurface;
+    Button(renderer, normalSurface);
     _clickedSurface = clickedSurface;
-    buttonRect.w = _normalSurface->w;
-    buttonRect.h = _normalSurface->h;
-    SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
-    _position = pos;
 }
 
 Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface) {
@@ -76,7 +65,6 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
 
     if (mouseX >= _position.x && mouseX <= _position.x + buttonRect.w && mouseY >= _position.y &&
         mouseY <= _position.y + buttonRect.h) {
-        // onClick();
         clicked();
     }
 }
