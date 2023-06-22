@@ -18,6 +18,7 @@ class Button {
     void update(SDL_Event &e, const std::function<void()> &clicked);
 
    private:
+    SDL_Surface *_windowSurface = NULL;
     SDL_Surface *_normalSurface = NULL;
     SDL_Surface *_hoveredSurface = NULL;
     SDL_Surface *_clickedSurface = NULL;

@@ -9,9 +9,11 @@ Gameplay::Gameplay() { _mainWindow.start(); }
 
 void Gameplay::_renderRollButton() {
     SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
-    // SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
-    // SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
-    button = new Button(_mainWindow.getRenderer(), buttonNormalSurface);
+    SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
+    SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
+    button = new Button(_mainWindow.getRenderer(), buttonNormalSurface, buttonClickedSurface,
+                        buttonHoverSurface);
+    // button = new Button(_mainWindow.getRenderer(), buttonNormalSurface);
     button->renderButton(_mainWindow.getSurface());
 }
 
@@ -48,7 +50,7 @@ void Gameplay::_rolld20() {
 }
 
 void Gameplay::handleInput(SDL_Event event) {
-    if (event.type == SDL_MOUSEBUTTONDOWN) {
+    if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEMOTION) {
         button->update(event, [this]() {
             _mainWindow.printText("Clicked!");
             _rolld20();

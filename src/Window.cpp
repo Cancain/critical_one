@@ -1,10 +1,5 @@
 #include "Window.h"
 
-#include <SDL2/SDL_ttf.h>
-
-#include <filesystem>
-#include <iostream>
-
 #include "Constants.h"
 
 Window::Window() {

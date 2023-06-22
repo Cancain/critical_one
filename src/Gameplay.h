@@ -2,9 +2,6 @@
 #define GAMEPLAY_H
 #include <SDL2/SDL.h>
 
-#include <iostream>
-#include <istream>
-
 #include "Button.h"
 #include "Dice.h"
 #include "Window.h"
