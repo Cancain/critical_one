@@ -44,7 +44,7 @@ void Button::renderButton(SDL_Surface *windowSurface) {
 
 void Button::onClick() { printf("Button clicked!"); }
 
-bool hovered = false;
+bool buttonHovered = false;
 
 void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
     int mouseX, mouseY;
@@ -52,24 +52,25 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
 
     SDL_Rect pos = {x : (800 / 2) - buttonRect.w / 2, y : (600 / 2) - buttonRect.h};
 
-    bool isHovered = mouseX >= _position.x && mouseX <= _position.x + buttonRect.w &&
-                     mouseY >= _position.y && mouseY <= _position.y + buttonRect.h;
+    bool isWithin = mouseX >= _position.x && mouseX <= _position.x + buttonRect.w &&
+                    mouseY >= _position.y && mouseY <= _position.y + buttonRect.h;
 
-    if (isHovered && _windowSurface && !hovered && _hoveredSurface) {
+    if (isWithin && _windowSurface && !buttonHovered && _hoveredSurface) {
         printf("hovered\n");
         SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
-        hovered = true;
+        buttonHovered = true;
     }
 
-    if (!isHovered && _windowSurface && hovered && _normalSurface) {
+    if (!isWithin && _windowSurface && buttonHovered && _normalSurface) {
         printf("unhovered\n");
         SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
-        hovered = false;
+        buttonHovered = false;
     }
 
-    if (e.button.button == SDL_BUTTON_LEFT && isHovered) {
+    if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
         clicked();
-        hovered = false;
+        SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
+        buttonHovered = false;
     }
 }
 
