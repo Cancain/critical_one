@@ -16,12 +16,17 @@ class Button {
     void onClick();
     void setPosition(SDL_Rect pos);
     void update(SDL_Event &e, const std::function<void()> &clicked);
+    void end();
 
    private:
     SDL_Surface *_windowSurface = NULL;
     SDL_Surface *_normalSurface = NULL;
     SDL_Surface *_hoveredSurface = NULL;
     SDL_Surface *_clickedSurface = NULL;
+    SDL_Texture *_buttonNormalTexture = NULL;
+    SDL_Texture *_buttonClickedTexture = NULL;
+    SDL_Texture *_buttonHoveredTexture = NULL;
+
     SDL_Renderer *_renderer;
     SDL_Rect _position;
 };

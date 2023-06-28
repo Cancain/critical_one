@@ -23,38 +23,23 @@ Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface) {
 }
 
 void Button::renderButton(SDL_Surface *windowSurface) {
-    SDL_Texture *buttonClickedTexture = NULL;
-    SDL_Texture *buttonHoveredTexture = NULL;
-
     _windowSurface = windowSurface;
 
     if (!_normalSurface) {
         printf("Failed to load normal button surface: %s\n", SDL_GetError());
     }
+
     if (_clickedSurface != NULL) {
-        buttonClickedTexture = SDL_CreateTextureFromSurface(_renderer, _clickedSurface);
+        _buttonClickedTexture = SDL_CreateTextureFromSurface(_renderer, _clickedSurface);
     }
 
     if (_hoveredSurface != NULL) {
-        buttonHoveredTexture = SDL_CreateTextureFromSurface(_renderer, _hoveredSurface);
+        _buttonHoveredTexture = SDL_CreateTextureFromSurface(_renderer, _hoveredSurface);
     }
 
-    SDL_Texture *buttonNormalTexture = SDL_CreateTextureFromSurface(_renderer, _normalSurface);
+    _buttonNormalTexture = SDL_CreateTextureFromSurface(_renderer, _normalSurface);
 
     SDL_BlitSurface(_normalSurface, NULL, windowSurface, &_position);
-
-    SDL_FreeSurface(_normalSurface);
-    SDL_DestroyTexture(buttonNormalTexture);
-
-    // if (_clickedSurface != NULL) {
-    // SDL_FreeSurface(_clickedSurface);
-    // SDL_DestroyTexture(buttonClickedTexture);
-    //}
-
-    // if (_hoveredSurface != NULL) {
-    // SDL_FreeSurface(_hoveredSurface);
-    // SDL_DestroyTexture(buttonHoveredTexture);
-    //}
 };
 
 void Button::onClick() { printf("Button clicked!"); }
@@ -70,19 +55,39 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
     bool isHovered = mouseX >= _position.x && mouseX <= _position.x + buttonRect.w &&
                      mouseY >= _position.y && mouseY <= _position.y + buttonRect.h;
 
-    if (isHovered && _windowSurface && !hovered) {
+    if (isHovered && _windowSurface && !hovered && _hoveredSurface) {
         printf("hovered\n");
         SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
         hovered = true;
-    } else {
-        SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
+    }
+
+    if (!isHovered && _windowSurface && hovered && _normalSurface) {
         printf("unhovered\n");
+        SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
         hovered = false;
     }
 
     if (e.button.button == SDL_BUTTON_LEFT && isHovered) {
         clicked();
         hovered = false;
+    }
+}
+
+void Button::end() {
+    SDL_FreeSurface(_normalSurface);
+
+    if (_buttonNormalTexture) {
+        SDL_DestroyTexture(_buttonNormalTexture);
+    }
+
+    if (_clickedSurface != NULL) {
+        SDL_FreeSurface(_clickedSurface);
+        SDL_DestroyTexture(_buttonClickedTexture);
+    }
+
+    if (_hoveredSurface != NULL) {
+        SDL_FreeSurface(_hoveredSurface);
+        SDL_DestroyTexture(_buttonHoveredTexture);
     }
 }
 
