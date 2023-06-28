@@ -13,7 +13,6 @@ void Gameplay::_renderRollButton() {
     SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
     button = new Button(_mainWindow.getRenderer(), buttonNormalSurface, buttonClickedSurface,
                         buttonHoverSurface);
-    // button = new Button(_mainWindow.getRenderer(), buttonNormalSurface);
     button->renderButton(_mainWindow.getSurface());
 }
 
@@ -28,8 +27,9 @@ bool Gameplay::isGameOn() { return _gameOn; }
 void Gameplay::end() {
     _gameOn = false;
     _mainWindow.end();
-    SDL_Quit();
+    button->end();
     delete button;
+    SDL_Quit();
 }
 
 void Gameplay::update() {

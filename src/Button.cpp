@@ -69,8 +69,17 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
 
     if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
         clicked();
-        SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
         buttonHovered = false;
+
+        Uint32 startTime = SDL_GetTicks();
+        Uint32 currentTime = startTime;
+        const Uint32 delayTime = 100;
+
+        while (currentTime - startTime < delayTime) {
+            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
+            currentTime = SDL_GetTicks();
+        }
+        SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
     }
 }
 
