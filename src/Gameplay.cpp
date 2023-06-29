@@ -50,13 +50,11 @@ void Gameplay::_rolld20() {
 }
 
 void Gameplay::handleInput(SDL_Event event) {
-    if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEMOTION) {
-        button->update(event, [this]() {
-            _mainWindow.printText("Clicked!");
-            _rolld20();
-            _renderRollButton();
-        });
-    }
+    button->update(event, [this]() {
+        _mainWindow.printText("Clicked!");
+        _rolld20();
+        _renderRollButton();
+    });
 
     if (event.type == SDL_KEYDOWN) {
         auto key = event.key.keysym.sym;
