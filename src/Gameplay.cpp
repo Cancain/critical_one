@@ -8,17 +8,32 @@
 
 Gameplay::Gameplay() { _mainWindow.start(); }
 
+void Gameplay::_renderExitButton() {
+    SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
+    SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
+    SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
+    const SDL_Rect pos = {x : WINDOW_WIDTH - buttonNormalSurface->w, y : 0};
+    exitButton = new Button(&_mainWindow, pos, buttonNormalSurface, buttonClickedSurface,
+                            buttonHoverSurface);
+    exitButton->renderButton(_mainWindow.getSurface());
+}
+
 void Gameplay::_renderRollButton() {
     SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
     SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
     SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
-    button =
-        new Button(&_mainWindow, buttonNormalSurface, buttonClickedSurface, buttonHoverSurface);
+    const SDL_Rect pos = {
+        x : (WINDOW_WIDTH / 2) - buttonNormalSurface->w / 2,
+        y : (WINDOW_HEIGHT / 2) - buttonNormalSurface->h
+    };
+    button = new Button(&_mainWindow, pos, buttonNormalSurface, buttonClickedSurface,
+                        buttonHoverSurface);
     button->renderButton(_mainWindow.getSurface());
 }
 
 void Gameplay::start() {
     _renderRollButton();
+    _renderExitButton();
     _d20 = Dice(20);
     _gameOn = true;
 }
@@ -57,7 +72,10 @@ void Gameplay::handleInput(SDL_Event event) {
         _mainWindow.printText("Clicked!");
         _rolld20();
         _renderRollButton();
+        _renderExitButton();
     });
+
+    exitButton->update(event, [this]() { end(); });
 
     if (event.type == SDL_KEYDOWN) {
         auto key = event.key.keysym.sym;

@@ -15,11 +15,13 @@ class Gameplay {
     void handleInput(SDL_Event event);
     void update();
     Button *button = nullptr;
+    Button *exitButton = nullptr;
     void SetDeltatime(const float deltaTime);
     float getDeltaTime();
 
    private:
     void _renderRollButton();
+    void _renderExitButton();
     void _rolld20();
     Window _mainWindow;
     Dice _d20 = Dice(20);

@@ -9,14 +9,15 @@
 
 class Button {
    public:
-    Button(Window *, SDL_Surface *);
-    Button(Window *, SDL_Surface *, SDL_Surface *);
-    Button(Window *, SDL_Surface *, SDL_Surface *, SDL_Surface *);
+    Button(Window *window, SDL_Rect pos, SDL_Surface *normalSurface);
+    Button(Window *window, SDL_Rect pos, SDL_Surface *normalSurface, SDL_Surface *clickedSurface);
+    Button(Window *window, SDL_Rect pos, SDL_Surface *normalSurface, SDL_Surface *clickedSurface,
+           SDL_Surface *HoveredSurface);
     SDL_Rect buttonRect;
-    SDL_Rect getPosition();
     void renderButton(SDL_Surface *);
     void onClick();
     void setPosition(SDL_Rect pos);
+    SDL_Rect getPosition();
     void update(SDL_Event &e, const std::function<void()> &clicked);
     void end();
 
@@ -31,6 +32,10 @@ class Button {
     SDL_Renderer *_renderer;
     SDL_Rect _position;
     Window *_mainWindow = NULL;
+    bool _buttonHovered = false;
+    void _manageHover(SDL_Event &e);
+    bool _isClicked(SDL_Event &e);
+    bool _isCursorWithin();
 };
 
 #endif
