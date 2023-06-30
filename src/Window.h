@@ -15,6 +15,7 @@ class Window {
     void update();
     SDL_Renderer *getRenderer();
     SDL_Surface *getSurface();
+    SDL_Window *getWindow();
 
    private:
     SDL_Window *_window = NULL;

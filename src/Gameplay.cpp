@@ -11,8 +11,8 @@ void Gameplay::_renderRollButton() {
     SDL_Surface *buttonNormalSurface = SDL_LoadBMP("assets/button_normal.bmp");
     SDL_Surface *buttonHoverSurface = SDL_LoadBMP("assets/button_hovered.bmp");
     SDL_Surface *buttonClickedSurface = SDL_LoadBMP("assets/button_clicked.bmp");
-    button = new Button(_mainWindow.getRenderer(), buttonNormalSurface, buttonClickedSurface,
-                        buttonHoverSurface);
+    button =
+        new Button(&_mainWindow, buttonNormalSurface, buttonClickedSurface, buttonHoverSurface);
     button->renderButton(_mainWindow.getSurface());
 }
 

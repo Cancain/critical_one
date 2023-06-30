@@ -73,3 +73,5 @@ void Window::end() {
 SDL_Renderer *Window::getRenderer() { return _renderer; }
 
 SDL_Surface *Window::getSurface() { return _windowSurface; }
+
+SDL_Window *Window::getWindow() { return _window; }

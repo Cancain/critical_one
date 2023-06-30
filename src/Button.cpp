@@ -2,19 +2,20 @@
 
 #include <iostream>
 
-Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *clickedSurface,
+Button::Button(Window *window, SDL_Surface *normalSurface, SDL_Surface *clickedSurface,
                SDL_Surface *hoveredSurface)
-    : Button(renderer, normalSurface, clickedSurface) {
+    : Button(window, normalSurface, clickedSurface) {
     _hoveredSurface = hoveredSurface;
 }
 
-Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface, SDL_Surface *clickedSurface)
-    : Button(renderer, normalSurface) {
+Button::Button(Window *window, SDL_Surface *normalSurface, SDL_Surface *clickedSurface)
+    : Button(window, normalSurface) {
     _clickedSurface = clickedSurface;
 }
 
-Button::Button(SDL_Renderer *renderer, SDL_Surface *normalSurface) {
-    _renderer = renderer;
+Button::Button(Window *window, SDL_Surface *normalSurface) {
+    _mainWindow = window;
+    _renderer = window->getRenderer();
     _normalSurface = normalSurface;
     buttonRect.w = _normalSurface->w;
     buttonRect.h = _normalSurface->h;
@@ -53,23 +54,6 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
     bool isWithin = mouseX >= _position.x && mouseX <= _position.x + buttonRect.w &&
                     mouseY >= _position.y && mouseY <= _position.y + buttonRect.h;
 
-    if (e.type == SDL_MOUSEBUTTONDOWN) {
-        if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
-            clicked();
-            buttonHovered = false;
-
-            Uint32 startTime = SDL_GetTicks();
-            Uint32 currentTime = startTime;
-            const Uint32 delayTime = 1000;
-            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
-
-            while (currentTime - startTime < delayTime) {
-                currentTime = SDL_GetTicks();
-            }
-            SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
-        }
-    }
-
     if (e.type == SDL_MOUSEMOTION) {
         if (isWithin && _windowSurface && !buttonHovered && _hoveredSurface) {
             SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
@@ -79,6 +63,28 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
         if (!isWithin && _windowSurface && buttonHovered && _normalSurface) {
             SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
             buttonHovered = false;
+        }
+    }
+
+    if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
+            clicked();
+            buttonHovered = false;
+
+            Uint32 startTime = SDL_GetTicks();
+            Uint32 currentTime = startTime;
+            const Uint32 delayTime = 200;
+            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
+
+            SDL_UpdateWindowSurface(_mainWindow->getWindow());
+
+            while (currentTime - startTime < delayTime) {
+                currentTime = SDL_GetTicks();
+            }
+
+            buttonHovered = true;
+
+            SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
         }
     }
 }

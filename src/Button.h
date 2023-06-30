@@ -5,11 +5,13 @@
 
 #include <functional>
 
+#include "Window.h"
+
 class Button {
    public:
-    Button(SDL_Renderer *, SDL_Surface *);
-    Button(SDL_Renderer *, SDL_Surface *, SDL_Surface *);
-    Button(SDL_Renderer *, SDL_Surface *, SDL_Surface *, SDL_Surface *);
+    Button(Window *, SDL_Surface *);
+    Button(Window *, SDL_Surface *, SDL_Surface *);
+    Button(Window *, SDL_Surface *, SDL_Surface *, SDL_Surface *);
     SDL_Rect buttonRect;
     SDL_Rect getPosition();
     void renderButton(SDL_Surface *);
@@ -26,9 +28,9 @@ class Button {
     SDL_Texture *_buttonNormalTexture = NULL;
     SDL_Texture *_buttonClickedTexture = NULL;
     SDL_Texture *_buttonHoveredTexture = NULL;
-
     SDL_Renderer *_renderer;
     SDL_Rect _position;
+    Window *_mainWindow = NULL;
 };
 
 #endif
