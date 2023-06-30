@@ -40,6 +40,7 @@ void Button::renderButton(SDL_Surface *windowSurface) {
 
     _buttonNormalTexture = SDL_CreateTextureFromSurface(_renderer, _normalSurface);
     SDL_BlitSurface(_normalSurface, NULL, windowSurface, &_position);
+    _buttonState = ButtonState::Normal;
 };
 
 bool Button::_isCursorWithin() {
@@ -51,27 +52,52 @@ bool Button::_isCursorWithin() {
 
 void Button::_manageHover(SDL_Event &e) {
     if (e.type == SDL_MOUSEMOTION) {
-        if (_isCursorWithin() && _windowSurface && !_buttonHovered && _hoveredSurface) {
+        bool isCursorWithin = _isCursorWithin();
+
+        if (isCursorWithin && _windowSurface && _hoveredSurface &&
+            _buttonState != ButtonState::Clicked) {
             SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
-            _buttonHovered = true;
+            _buttonState = ButtonState::Hovered;
         }
 
-        if (!_isCursorWithin() && _windowSurface && _buttonHovered && _normalSurface) {
+        if (!isCursorWithin && _windowSurface && _normalSurface &&
+            _buttonState != ButtonState::Clicked) {
             SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
-            _buttonHovered = false;
+            _buttonState = ButtonState::Normal;
         }
     }
+    SDL_UpdateWindowSurface(_mainWindow->getWindow());
 }
 
 bool Button::_isClicked(SDL_Event &e) { return e.type == SDL_MOUSEBUTTONDOWN && _isCursorWithin(); }
 
 void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
+    _manageHover(e);
+
     if (_isClicked(e)) {
         clicked();
+
+        if (_clickedSurface && _windowSurface) {
+            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
+            _buttonState = ButtonState::Clicked;
+            SDL_UpdateWindowSurface(_mainWindow->getWindow());
+        }
+
+        SDL_Delay(100);
+
+        if (_buttonState != ButtonState::Hovered) {
+            if (_isCursorWithin() && _hoveredSurface) {
+                SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
+            } else if (_normalSurface) {
+                SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
+            }
+
+            SDL_UpdateWindowSurface(_mainWindow->getWindow());
+        }
     }
+
     _manageHover(e);
 }
-
 void Button::end() {
     SDL_FreeSurface(_normalSurface);
 

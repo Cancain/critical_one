@@ -7,6 +7,8 @@
 
 #include "Window.h"
 
+enum class ButtonState { Normal, Hovered, Clicked };
+
 class Button {
    public:
     Button(Window *window, SDL_Rect pos, SDL_Surface *normalSurface);
@@ -36,6 +38,7 @@ class Button {
     void _manageHover(SDL_Event &e);
     bool _isClicked(SDL_Event &e);
     bool _isCursorWithin();
+    ButtonState _buttonState = ButtonState::Normal;
 };
 
 #endif
