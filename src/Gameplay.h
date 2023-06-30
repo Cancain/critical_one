@@ -15,6 +15,8 @@ class Gameplay {
     void handleInput(SDL_Event event);
     void update();
     Button *button = nullptr;
+    void SetDeltatime(const float deltaTime);
+    float getDeltaTime();
 
    private:
     void _renderRollButton();
@@ -22,6 +24,10 @@ class Gameplay {
     Window _mainWindow;
     Dice _d20 = Dice(20);
     bool _gameOn = false;
+    float _deltaTime;
+    int _ticksLastFrame;
+    void _updateDeltaTime();
+    void _waitForTargetFramerate();
 };
 
 #endif

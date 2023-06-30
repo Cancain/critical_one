@@ -39,7 +39,6 @@ void Button::renderButton(SDL_Surface *windowSurface) {
     }
 
     _buttonNormalTexture = SDL_CreateTextureFromSurface(_renderer, _normalSurface);
-
     SDL_BlitSurface(_normalSurface, NULL, windowSurface, &_position);
 };
 
@@ -54,6 +53,19 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
     bool isWithin = mouseX >= _position.x && mouseX <= _position.x + buttonRect.w &&
                     mouseY >= _position.y && mouseY <= _position.y + buttonRect.h;
 
+    if (e.type == SDL_MOUSEBUTTONDOWN) {
+        if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
+            clicked();
+            buttonHovered = false;
+            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
+            SDL_UpdateWindowSurface(_mainWindow->getWindow());
+            const Uint32 delayTime = 200;
+            SDL_Delay(delayTime);
+            buttonHovered = true;
+            SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
+        }
+    }
+
     if (e.type == SDL_MOUSEMOTION) {
         if (isWithin && _windowSurface && !buttonHovered && _hoveredSurface) {
             SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
@@ -63,28 +75,6 @@ void Button::update(SDL_Event &e, const std::function<void()> &clicked) {
         if (!isWithin && _windowSurface && buttonHovered && _normalSurface) {
             SDL_BlitSurface(_normalSurface, NULL, _windowSurface, &_position);
             buttonHovered = false;
-        }
-    }
-
-    if (e.type == SDL_MOUSEBUTTONDOWN) {
-        if (e.button.button == SDL_BUTTON_LEFT && isWithin) {
-            clicked();
-            buttonHovered = false;
-
-            Uint32 startTime = SDL_GetTicks();
-            Uint32 currentTime = startTime;
-            const Uint32 delayTime = 200;
-            SDL_BlitSurface(_clickedSurface, NULL, _windowSurface, &_position);
-
-            SDL_UpdateWindowSurface(_mainWindow->getWindow());
-
-            while (currentTime - startTime < delayTime) {
-                currentTime = SDL_GetTicks();
-            }
-
-            buttonHovered = true;
-
-            SDL_BlitSurface(_hoveredSurface, NULL, _windowSurface, &_position);
         }
     }
 }

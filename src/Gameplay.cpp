@@ -1,6 +1,7 @@
 #include "Gameplay.h"
 
 #include "Button.h"
+#include "Constants.h"
 #include "Dice.h"
 #include "Window.h"
 #include "functional"
@@ -33,6 +34,8 @@ void Gameplay::end() {
 }
 
 void Gameplay::update() {
+    _waitForTargetFramerate();
+    _updateDeltaTime();
     _mainWindow.update();
 
     SDL_Event e;
@@ -64,5 +67,23 @@ void Gameplay::handleInput(SDL_Event event) {
                 end();
                 break;
         }
+    }
+}
+
+void Gameplay::SetDeltatime(float deltaTime) { _deltaTime = deltaTime; }
+
+float Gameplay::getDeltaTime() { return _deltaTime; }
+
+void Gameplay::_updateDeltaTime() {
+    _deltaTime = (SDL_GetTicks() - _ticksLastFrame) / 1000.0f;
+    _ticksLastFrame = SDL_GetTicks();
+    _deltaTime = _deltaTime > 0.05f ? 0.05f : _deltaTime;
+}
+
+void Gameplay::_waitForTargetFramerate() {
+    int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - _ticksLastFrame);
+
+    if (timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
+        SDL_Delay(timeToWait);
     }
 }

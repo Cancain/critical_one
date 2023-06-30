@@ -9,5 +9,7 @@ int main() {
         g.update();
     }
 
+    g.end();
+
     return 0;
 }
